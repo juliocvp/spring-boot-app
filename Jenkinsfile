@@ -9,6 +9,7 @@ pipeline {
         stage("test") {
             steps {
                 sh "mvn test"
+                jacoco()
                 junit "target/surefire-reports/*.xml"
             }
         }
