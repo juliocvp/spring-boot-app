@@ -13,7 +13,7 @@ pipeline {
         NEXUS_REPOSITORY = "bootcamp"
         NEXUS_CREDENTIAL_ID = "nexus"
         DOCKER_CREDENTIALS = credentials("Docker-Hub")
-        DOCKER_IMAGE_NAME = "juliocvp/ spring-boot-app"
+        DOCKER_IMAGE_NAME = "juliocvp/spring-boot-app"
     }
 
     stages {
@@ -74,7 +74,7 @@ pipeline {
         }
         stage("Build image and push to DockerHub") {
             steps {
-                sh 'echo $DOCKER_CREDENTIALS_psw | docker login -u $DOCKER_CREDENTIALS_USR --password-stdin'
+                sh 'echo $DOCKER_CREDENTIALS_PSW | docker login -u $DOCKER_CREDENTIALS_USR --password-stdin'
                 sh "docker build -t $DOCKER_IMAGE_NAME:${versionPom} ."
                 sh "docker push $DOCKER_IMAGE_NAME:${versionPom}"
             }
