@@ -31,7 +31,7 @@ public class TutorialController {
 
 	@GetMapping("/Dummy")
 	public ResponseEntity<String> getDummyText(){
-		String dummy "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+		String dummy = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
 		return new ResponseEntity<>(dummy, HttpStatus.OK);
 	}
 
