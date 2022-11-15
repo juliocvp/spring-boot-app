@@ -9,7 +9,7 @@ pipeline {
     environment {
         NEXUS_VERSION = "nexus3"
         NEXUS_PROTOCOL = "http"
-        NEXUS_URL = "192.168.67.6:8081"
+        NEXUS_URL = "192.168.67.5:8081"
         NEXUS_REPOSITORY = "bootcamp"
         NEXUS_CREDENTIAL_ID = "nexus"
         DOCKER_CREDENTIALS = credentials("Docker-Hub")
@@ -78,6 +78,11 @@ pipeline {
                 sh "docker build -t $DOCKER_IMAGE_NAME:${versionPom} ."
                 sh "docker push $DOCKER_IMAGE_NAME:${versionPom}"
             }
+        }
+    }
+    post {
+        always {
+            sh 'docker logout'
         }
     }
 }
