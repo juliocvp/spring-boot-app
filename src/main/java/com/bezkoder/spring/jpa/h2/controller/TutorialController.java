@@ -29,6 +29,12 @@ public class TutorialController {
 	@Autowired
 	TutorialRepository tutorialRepository;
 
+	@GetMapping("/Dummy")
+	public ResponseEntity<String> getDummyText(){
+		String dummy "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+		return new ResponseEntity<>(dummy, HttpStatus.OK);
+	}
+
 	@GetMapping("/tutorials")
 	public ResponseEntity<List<Tutorial>> getAllTutorials(@RequestParam(required = false) String title) {
 		try {
