@@ -79,6 +79,12 @@ pipeline {
                 sh "docker push $DOCKER_IMAGE_NAME:${versionPom}"
             }
         }
+        stage("Deploy to KBs") {
+            steps {
+                sh "git clone https://github.com/juliocvp/kubernetes-helm-docker-config.git configuracion --branch demo-java"
+                sh "kubectl apply -f configuracion/kubernetes-deployments/spring-boot-app/deployment.yaml --kubeconfig=configuracion/kubernetes-config/config"
+            }
+        }
     }
     post {
         always {
