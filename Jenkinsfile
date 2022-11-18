@@ -18,11 +18,6 @@ spec:
         }
     }
 
-  environment {
-    registryCredential='docker-hub-credentials'
-    registryFrontend = 'juliocvp/frontend-demo'
-  }
-
     environment {
         DOCKER_CREDENTIALS = credentials("docker-hub-credentials")
         DOCKER_IMAGE_NAME = "juliocvp/spring-boot-app"
