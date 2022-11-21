@@ -64,12 +64,11 @@
             "raw": "{\r\n    \"title\": \"api-test\",\r\n    \"description\": \"api-test\",\r\n    \"published\": true\r\n}"
           },
           "url": {
-            "raw": "https://chatty-needles-decide-213-0-57-163.loca.lt/api/tutorials",
+            "raw": "https://spring-boot-app.default:8080/api/tutorials",
             "protocol": "https",
             "host": [
-              "chatty-needles-decide-213-0-57-163",
-              "loca",
-              "lt"
+              "spring-boot-app",
+              "default"
             ],
             "path": [
               "api",
