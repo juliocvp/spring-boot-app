@@ -36,7 +36,7 @@ spec:
                     if(fileExists("spring-boot-app")){
                         sh 'rm -r spring-boot-app'
                     }
-                    sh 'npm install -y newman'
+                    sh 'npm install -g -y newman'
                     sh 'git clone https://github.com/juliocvp/spring-boot-app.git spring-boot-app --branch test-k8s'
                     sh 'newman run spring-boot-app/src/main/resources/bootcamp.postman_collection.json --reporters cli,junit --reporter-junit-export "newman/report.xml"'
                     junit "newman/report.xml"
