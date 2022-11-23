@@ -70,8 +70,10 @@ spec:
                             sh 'rm -r apache-jmeter-5.5.tgz'
                         }
                         sh './run.sh -n -t test/perform_test.jmx -l test/perform_test.jtl'
-                        sh 'docker cp jmeter:/home/jmeter/apache-jmeter-5.5/test/perform_test.jtl /home/jenkins/agent/workspace/pipeline-deploy-spring-app-performance-test/jmeter-docker/test'
-                        perfReport '/home/jenkins/agent/workspace/pipeline-deploy-spring-app-performance-test/jmeter-docker/test/perform_test.jtl'
+//                        sh 'docker cp jmeter:/home/jmeter/apache-jmeter-5.5/test/perform_test.jtl /home/jenkins/agent/workspace/pipeline-deploy-spring-app-performance-test/jmeter-docker/test'
+//                        perfReport '/home/jenkins/agent/workspace/pipeline-deploy-spring-app-performance-test/jmeter-docker/test/perform_test.jtl'
+                        sh 'docker cp jmeter:/home/jmeter/apache-jmeter-5.5/test/perform_test.jtl $(pwd)/test'
+                        perfReport '/test/perform_test.jtl'
                         }
 
                 }
@@ -86,7 +88,7 @@ spec:
 //                        sh 'export PATH=$PATH:/home/jenkins/.local/bin'
 
                         BlazeMeterTest: {
-                            sh '/home/jenkins/.local/bin/bzt test/perform_test.jtl -report'
+                            sh 'test/perform_test.jtl -report'
                         }
                      }
                 }
