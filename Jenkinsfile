@@ -8,7 +8,7 @@ kind: Pod
 spec:
   containers:
   - name: shell
-    image: juliocvp/jenkins-nodo-java-bootcamp:2.0
+    image: juliocvp/jenkins-nodo-java-bootcamp:3.0
     volumeMounts:
     - mountPath: /var/run/docker.sock
       name: docker-socket-volume
@@ -74,6 +74,21 @@ spec:
                         perfReport '/home/jenkins/agent/workspace/pipeline-deploy-spring-app-performance-test/jmeter-docker/test/perform_test.jtl'
                         }
 
+                }
+            }
+        }
+
+        stage ("Generate Taurus Report") {
+            steps{
+                script {
+                     dir('jmeter-docker') {
+                        sh 'pip install bzt'
+                        sh 'export PATH=$PATH:/home/jenkins/.local/bin'
+
+                        BlazeMeterTest: {
+                            sh '/home/jenkins/.local/bin/bzt test/perform_test.jtl -report'
+                        }
+                     }
                 }
             }
         }
