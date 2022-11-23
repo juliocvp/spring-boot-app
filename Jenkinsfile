@@ -73,7 +73,7 @@ spec:
 //                        sh 'docker cp jmeter:/home/jmeter/apache-jmeter-5.5/test/perform_test.jtl /home/jenkins/agent/workspace/pipeline-deploy-spring-app-performance-test/jmeter-docker/test'
 //                        perfReport '/home/jenkins/agent/workspace/pipeline-deploy-spring-app-performance-test/jmeter-docker/test/perform_test.jtl'
                         sh 'docker cp jmeter:/home/jmeter/apache-jmeter-5.5/test/perform_test.jtl $(pwd)/test'
-                        perfReport '/test/perform_test.jtl'
+                        perfReport './test/perform_test.jtl'
                         }
 
                 }
