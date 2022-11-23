@@ -8,7 +8,7 @@ kind: Pod
 spec:
   containers:
   - name: shell
-    image: juliocvp/jenkins-nodo-java-bootcamp:1.0
+    image: juliocvp/jenkins-nodo-java-bootcamp:2.0
     volumeMounts:
     - mountPath: /var/run/docker.sock
       name: docker-socket-volume
