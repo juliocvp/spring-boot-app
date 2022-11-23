@@ -8,7 +8,7 @@ kind: Pod
 spec:
   containers:
   - name: shell
-    image: juliocvp/jenkins-nodo-java-bootcamp:3.0
+    image: juliocvp/jenkins-nodo-java-bootcamp:4.0
     volumeMounts:
     - mountPath: /var/run/docker.sock
       name: docker-socket-volume
@@ -82,8 +82,8 @@ spec:
             steps{
                 script {
                      dir('jmeter-docker') {
-                        sh 'pip install bzt'
-                        sh 'export PATH=$PATH:/home/jenkins/.local/bin'
+//                        sh 'pip install bzt'
+//                        sh 'export PATH=$PATH:/home/jenkins/.local/bin'
 
                         BlazeMeterTest: {
                             sh '/home/jenkins/.local/bin/bzt test/perform_test.jtl -report'
