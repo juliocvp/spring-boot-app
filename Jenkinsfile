@@ -28,28 +28,53 @@ spec:
         }
     }
 
-    environment {
-        DOCKER_CREDENTIALS = credentials("docker-hub-credentials")
-        DOCKER_IMAGE_NAME = "juliocvp/spring-boot-app"
-    }
-
     stages {
-        stage("build") {
-            steps {
-                sh "mvn clean package -DskipTest"
+        stage ("Setup Jmeter") {
+            steps{
+                script {
+
+                    if(fileExists("jmeter-docker")){
+                        sh 'rm -r jmeter-docker'
+                    }
+
+                    sh 'git clone https://github.com/juliocvp/jmeter-docker.git'
+
+                        dir('jmeter-docker') {
+
+                        if(fileExists("apache-jmeter-5.5.tgz")){
+                            sh 'rm -r apache-jmeter-5.5.tgz'
+                        }
+
+                        sh 'wget https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-5.5.tgz'
+                        sh 'tar xvf apache-jmeter-5.5.tgz'
+                        sh 'cp plugins/*.jar apache-jmeter-5.5/lib/ext'
+                        sh 'mkdir test'
+                        sh 'mkdir apache-jmeter-5.5/test'
+                        sh 'cp ../src/main/resources/*.jmx apache-jmeter-5.5/test/'
+                        sh 'chmod +775 ./build.sh && chmod +775 ./run.sh && chmod +775 ./entrypoint.sh'
+                        sh 'rm -r apache-jmeter-5.5.tgz'
+                        sh 'tar -czvf apache-jmeter-5.5.tgz apache-jmeter-5.5'
+                        sh './build.sh'
+                        sh 'rm -r apache-jmeter-5.5 && rm -r apache-jmeter-5.5.tgz'
+                        sh 'cp ../src/main/resources/perform_test.jmx test'
+                        }
+
+                }
             }
         }
-        stage("Build image and push to DockerHub") {
-            steps {
-                sh 'echo $DOCKER_CREDENTIALS_PSW | docker login -u $DOCKER_CREDENTIALS_USR --password-stdin'
-                sh "docker build -t $DOCKER_IMAGE_NAME:latest ."
-                sh "docker push $DOCKER_IMAGE_NAME:latest"
-            }
-        }
-        stage("Deploy to KBs") {
-            steps {
-                sh "git clone https://github.com/juliocvp/kubernetes-helm-docker-config.git configuracion --branch test-implementation"
-                sh "kubectl apply -f configuracion/kubernetes-deployments/spring-boot-app/deployment.yaml --kubeconfig=configuracion/kubernetes-config/config"
+        stage ("Run Jmeter Performance Test") {
+            steps{
+                script {
+                        dir('jmeter-docker') {
+                        if(fileExists("apache-jmeter-5.5.tgz")){
+                            sh 'rm -r apache-jmeter-5.5.tgz'
+                        }
+                        sh './run.sh -n -t test/perform_test.jmx -l test/perform_test.jtl'
+                        sh 'docker cp jmeter:/home/jmeter/apache-jmeter-5.5/test/perform_test.jtl /home/jenkins/workspace/_app_perform-test-implementation/jmeter-docker/test'
+                        perfReport '/home/jenkins/workspace/_app_perform-test-implementation/jmeter-docker/test/perform_test.jtl'
+                        }
+
+                }
             }
         }
     }
